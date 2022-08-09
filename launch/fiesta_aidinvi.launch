@@ -65,7 +65,7 @@
 
         <!-- subsribe source -->
         <remap from="~depth" to="/velodyne_points2"/>
-        <remap from="~transform" to="/aidinvi1/odom"/>
+        <remap from="~transform" to="/aidinvi1/tf_lidar"/>
     </node>
 
     <!--node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find fiesta)/demo.rviz" /-->
