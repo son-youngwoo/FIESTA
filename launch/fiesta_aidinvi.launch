@@ -18,7 +18,7 @@
         <param name="rz" value="+3"/>
 
         <!-- raycasting parameters -->
-        <param name="min_ray_length" value="0.6"/>
+        <param name="min_ray_length" value="0.3"/>
         <param name="max_ray_length" value="5.0"/>
         <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
         <param name="ray_cast_num_thread" value="0"/>
@@ -42,8 +42,8 @@
         <param name="global_map" value="false"/>
         <param name="global_update" value="false"/>
         <param name="global_vis" value="false"/>
-        <param name="radius_x" value="1.0"/>
-        <param name="radius_y" value="1.0"/>
+        <param name="radius_x" value="5.0"/>
+        <param name="radius_y" value="5.0"/>
         <param name="radius_z" value="1.5"/>
 
         <!--depth_filter -->
@@ -64,11 +64,18 @@
         <param name="vis_upper_bound" value="+10"/>
 
         <!-- subsribe source -->
-        <remap from="~depth" to="/velodyne_points2"/>
-        <remap from="~transform" to="/aidinvi1/tf_lidar"/>
+        <!-- fiesta using lidar ouster-os0 --> 
+        <!--remap from="~depth" to="/velodyne_points2"/>
+        <remap from="~transform" to="/aidinvi1/tf_lidar"/-->
+        
+        <!-- subsribe source -->
+        <!-- fiesta using depth camera D435i -->
+        <remap from="~depth" to="/aidinvi1/aidinvi_camera_ir/aidinvi_camera/depth/points"/>
+        <remap from="~transform" to="/aidinvi1/tf_camera"/>
+        
     </node>
 
-    <arg name="path" default=""/>
+    <!--arg name="path" default=""/>
   <arg name="changeIdFrame" default="/talker/changes"/>
 
   <node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(arg path)">
@@ -82,7 +89,7 @@
     <param name="change_id_frame" value="$(arg changeIdFrame)" />
     <param name="min_change_pub" value="0" />
     <remap from="cloud_in" to="/velodyne_points2" />
-  </node>
+  </node-->
 
     <!--node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find fiesta)/demo.rviz" /-->
 </launch>
