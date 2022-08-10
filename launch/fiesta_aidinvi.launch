@@ -4,7 +4,7 @@
           required="true">
 
         <param name="resolution" value="0.05"/>
-        <param name="update_esdf_every_n_sec" value="0.1"/>
+        <param name="update_esdf_every_n_sec" value="0.01"/>
 
         <!--Hash Table only-->
         <param name="reserved_size" value="1000000"/>
@@ -18,7 +18,7 @@
         <param name="rz" value="+3"/>
 
         <!-- raycasting parameters -->
-        <param name="min_ray_length" value="0.5"/>
+        <param name="min_ray_length" value="0.6"/>
         <param name="max_ray_length" value="5.0"/>
         <!--If hash table is used, make sure the value is 0. In array implementation, 0 means no other thread.-->
         <param name="ray_cast_num_thread" value="0"/>
@@ -39,11 +39,11 @@
         <param name="p_occ" value="0.80"/>
 
         <!-- global / local -->
-        <param name="global_map" value="true"/>
-        <param name="global_update" value="true"/>
-        <param name="global_vis" value="true"/>
-        <param name="radius_x" value="3.0"/>
-        <param name="radius_y" value="3.0"/>
+        <param name="global_map" value="false"/>
+        <param name="global_update" value="false"/>
+        <param name="global_vis" value="false"/>
+        <param name="radius_x" value="1.0"/>
+        <param name="radius_y" value="1.0"/>
         <param name="radius_z" value="1.5"/>
 
         <!--depth_filter -->
@@ -59,7 +59,7 @@
         <param name="visualize_every_n_updates" value="10"/>
         <param name="slice_vis_max_dist" value="2.0"/>
         <!-- relative to the lz if array is used, relative to the origin if hash table is used -->
-        <param name="slice_vis_level" value="1.6"/>
+        <param name="slice_vis_level" value="1.5"/>
         <param name="vis_lower_bound" value="0"/>
         <param name="vis_upper_bound" value="+10"/>
 
@@ -67,6 +67,22 @@
         <remap from="~depth" to="/velodyne_points2"/>
         <remap from="~transform" to="/aidinvi1/tf_lidar"/>
     </node>
+
+    <arg name="path" default=""/>
+  <arg name="changeIdFrame" default="/talker/changes"/>
+
+  <node pkg="octomap_server" type="octomap_tracking_server_node" name="octomap_talker" output="screen" args="$(arg path)">
+    <param name="resolution" value="0.05" />
+    <param name="frame_id" type="string" value="world" />
+    <param name="sensor_model/max_range" value="50.0" />
+    <param name="save_directory" value="$(optenv OCTOMAP_SAVE_DIR ./)" />
+    <param name="track_changes" value="true"/>
+    <param name="listen_changes" value="false"/>
+    <param name="topic_changes" value="/octomap_tracking_server/changeset" />
+    <param name="change_id_frame" value="$(arg changeIdFrame)" />
+    <param name="min_change_pub" value="0" />
+    <remap from="cloud_in" to="/velodyne_points2" />
+  </node>
 
     <!--node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find fiesta)/demo.rviz" /-->
 </launch>
